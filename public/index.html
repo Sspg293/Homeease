@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HomeEase – Home services at your doorstep</title>
+<style>
+:root{--bg:#fff;--surf:#f4f4f6;--ink:#1c1c1e;--mut:#6b6b73;--line:#e6e6ea;--acc:#6e42e5;--accs:#efeaff;--ok:#1a8f4c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141416;--surf:#222226;--ink:#f2f2f4;--mut:#a0a0aa;--line:#33333a;--acc:#9b7bff;--accs:#2a2342;--ok:#4cc17f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141416;--surf:#222226;--ink:#f2f2f4;--mut:#a0a0aa;--line:#33333a;--acc:#9b7bff;--accs:#2a2342;--ok:#4cc17f;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;display:flex;justify-content:center}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+#app{width:100%;max-width:480px;height:100%;display:flex;flex-direction:column;position:relative;overflow:hidden}
+main{flex:1;overflow-y:auto;padding-bottom:150px}
+.top{padding:14px 18px 6px}
+.loc{display:flex;align-items:center;gap:6px;font-weight:700;font-size:16px}
+.loc small{display:block;color:var(--mut);font-weight:400;font-size:12px}
+h1{font-size:26px;line-height:1.15;margin:14px 0 12px;letter-spacing:-.4px}
+h2{font-size:18px;margin:0 0 12px;letter-spacing:-.2px}
+.search{display:flex;align-items:center;gap:10px;background:var(--surf);border-radius:12px;padding:12px 14px;color:var(--mut)}
+.search input{flex:1;border:0;background:none;color:var(--ink);font:inherit;min-width:0}
+.sec{padding:20px 18px 0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cat{background:var(--surf);border-radius:14px;padding:14px 6px 10px;text-align:center;font-size:12.5px;font-weight:600}
+.cat span{display:block;font-size:30px;margin-bottom:6px}
+.promo{background:var(--acc);color:#fff;border-radius:16px;padding:18px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.promo b{font-size:19px;display:block;line-height:1.2}
+.promo p{margin:6px 0 0;font-size:13px;opacity:.9}
+.promo span{font-size:46px}
+.hs{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px}
+.card{flex:0 0 150px;border:1px solid var(--line);border-radius:14px;padding:12px;text-align:left}
+.card .em{font-size:30px}
+.card h3{font-size:14px;margin:8px 0 2px}
+.meta{color:var(--mut);font-size:12.5px}
+.star{color:var(--ink);font-weight:600}
+.hdr{display:flex;align-items:center;gap:10px;padding:14px 18px;position:sticky;top:0;background:var(--bg);z-index:2;border-bottom:1px solid var(--line)}
+.back{width:36px;height:36px;border-radius:50%;background:var(--surf);font-size:18px}
+.hdr b{font-size:18px}
+.svc{display:flex;justify-content:space-between;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+.svc h3{margin:0 0 3px;font-size:15.5px}
+.price{font-weight:700;margin-top:6px}
+.price s{color:var(--mut);font-weight:400;margin-left:6px;font-size:13px}
+.add{border:1px solid var(--acc);color:var(--acc);background:var(--accs);border-radius:10px;padding:8px 20px;font-weight:700;align-self:center}
+.qty{display:flex;align-items:center;gap:12px;border:1px solid var(--acc);background:var(--accs);color:var(--acc);border-radius:10px;padding:4px 8px;font-weight:700;align-self:center}
+.qty button{font-size:20px;width:24px;color:var(--acc)}
+.cartbar{position:absolute;left:12px;right:12px;bottom:calc(68px + env(safe-area-inset-bottom,0px));background:var(--acc);color:#fff;border-radius:14px;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;font-weight:700;width:calc(100% - 24px)}
+nav{position:absolute;left:0;right:0;bottom:0;display:flex;background:var(--bg);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;padding:10px 0 12px;font-size:12px;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button i{font-style:normal;font-size:20px}
+nav button.on{color:var(--acc);font-weight:700}
+.sheet{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;z-index:5}
+.sheet>div{background:var(--bg);width:100%;max-height:90%;overflow-y:auto;border-radius:20px 20px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom,0px));animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.sheet>div{animation:none}}
+.row{display:flex;justify-content:space-between;padding:6px 0}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px}
+.chip{flex:0 0 auto;border:1px solid var(--line);border-radius:12px;padding:8px 14px;text-align:center;font-size:13px}
+.chip.on{border-color:var(--acc);background:var(--accs);color:var(--acc);font-weight:700}
+.btn{width:100%;background:var(--acc);color:#fff;border-radius:12px;padding:14px;font-weight:700;font-size:16px;margin-top:12px}
+.btn:disabled{opacity:.45}
+.addr{width:100%;background:var(--surf);border:0;border-radius:12px;padding:12px;color:var(--ink);font:inherit;margin-bottom:14px}
+.done{text-align:center;padding:30px 10px}
+.done .tick{width:72px;height:72px;border-radius:50%;background:var(--ok);color:#fff;font-size:38px;display:grid;place-items:center;margin:0 auto 14px}
+.bk{border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.pill{display:inline-block;background:var(--accs);color:var(--acc);border-radius:20px;padding:2px 10px;font-size:12px;font-weight:700}
+.empty{text-align:center;color:var(--mut);padding:60px 20px}
+.login{padding:48px 22px 24px}
+.logo{width:64px;height:64px;border-radius:18px;background:var(--acc);display:grid;place-items:center;font-size:32px}
+.phrow{display:flex;align-items:center;gap:10px;background:var(--surf);border-radius:12px;padding:0 14px;margin:6px 0}
+.phrow span{font-weight:700}
+.phrow input{flex:1;min-width:0;border:0;background:none;color:var(--ink);font:inherit;font-size:17px;padding:14px 0}
+.otp{width:100%;letter-spacing:12px;text-align:center;font:inherit;font-size:24px;background:var(--surf);border:0;border-radius:12px;padding:14px;color:var(--ink);margin:6px 0}
+.err{color:#d93636;font-size:13px;min-height:20px}
+.link{color:var(--acc);font-weight:700;width:100%;padding:12px}
+.tiny{font-size:11.5px;margin-top:20px}
+.link:disabled{color:var(--mut);cursor:default}
+.toast{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));left:10px;right:10px;background:var(--ink);color:var(--bg);border-radius:14px;padding:12px 14px;z-index:20;font-size:14px;box-shadow:0 8px 24px rgba(0,0,0,.3);animation:down .25s ease-out;cursor:pointer}
+@keyframes down{from{transform:translateY(-30px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.toast{animation:none}}
+</style>
+</head>
+<body>
+<div id="app"><main id="main"></main><div id="bar"></div>
+<nav><button id="n-home" class="on"><i>🏠</i>Home</button><button id="n-bk"><i>📋</i>Bookings</button><button id="n-ac"><i>👤</i>Account</button></nav>
+<div id="modal"></div></div>
+<script>
+var CATS=[
+{id:'sal',n:'Salon for women',e:'💇‍♀️',s:[['Haircut & styling',699,899,45,4.82],['Waxing – full arms & legs',899,1199,60,4.80],['Facial & cleanup',1299,1599,75,4.78]]},
+{id:'men',n:'Men’s grooming',e:'💈',s:[['Haircut at home',399,499,30,4.84],['Beard trim & shave',249,299,20,4.81],['Head massage',349,449,30,4.79]]},
+{id:'ac',n:'AC repair',e:'❄️',s:[['AC service – split',599,799,45,4.79],['AC gas refill',2499,2999,60,4.75],['AC installation',1499,1799,90,4.77]]},
+{id:'cln',n:'Home cleaning',e:'🧹',s:[['Full home deep clean – 2 BHK',3499,4299,240,4.80],['Bathroom cleaning',499,649,45,4.78],['Kitchen cleaning',1299,1599,120,4.76]]},
+{id:'plm',n:'Plumber',e:'🔧',s:[['Tap repair / replacement',199,249,30,4.74],['Blockage removal',399,499,45,4.72],['Water tank cleaning',799,999,90,4.70]]},
+{id:'elc',n:'Electrician',e:'💡',s:[['Fan repair',249,299,30,4.77],['Switch / socket repair',149,199,20,4.75],['Inverter check-up',349,449,40,4.73]]},
+{id:'pnt',n:'Painting',e:'🎨',s:[['Room painting – 1 wall',1799,2199,180,4.71],['Waterproofing check',999,1299,60,4.69]]},
+{id:'app',n:'Appliance repair',e:'🧺',s:[['Washing machine repair',399,499,45,4.76],['Refrigerator repair',449,549,45,4.74],['Water purifier service',499,649,40,4.80]]}
+];
+var ALL=[];CATS.forEach(function(c){c.s.forEach(function(s,i){ALL.push({id:c.id+i,cat:c.id,e:c.e,n:s[0],p:s[1],mrp:s[2],m:s[3],r:s[4]});});});
+var cart={},bookings=[],view='home',catId=null,tab='home',q='',user='',step='phone',phone='',err='',mode='login',uname='',uemail='',otp='',otpExp=0,resendAt=0,acc={};
+try{user=localStorage.getItem('he_user')||'';acc=JSON.parse(localStorage.getItem('he_acc')||'{}');}catch(e){}
+try{bookings=JSON.parse(localStorage.getItem('he_bk')||'[]');}catch(e){}
+var $=function(i){return document.getElementById(i);};
+function inr(n){return '₹'+n.toLocaleString('en-IN');}
+function find(id){return ALL.filter(function(x){return x.id===id;})[0];}
+function total(){var t=0,c=0;for(var k in cart){t+=find(k).p*cart[k];c+=cart[k];}return {t:t,c:c};}
+function ctl(id){var n=cart[id]||0;return n?'<div class="qty"><button data-d="-1" data-id="'+id+'" aria-label="Remove one">−</button>'+n+'<button data-d="1" data-id="'+id+'" aria-label="Add one">+</button></div>':'<button class="add" data-d="1" data-id="'+id+'">Add</button>';}
+function svcRow(s){return '<div class="svc"><div><h3>'+s.n+'</h3><div class="meta"><span class="star">★ '+s.r+'</span> · '+(s.m>=60?(s.m/60).toFixed(s.m%60?1:0)+' hrs':s.m+' mins')+'</div><div class="price">'+inr(s.p)+'<s>'+inr(s.mrp)+'</s></div></div>'+ctl(s.id)+'</div>';}
+function render(){
+var m=$('main'),h='';
+document.querySelector('nav').style.display=user?'flex':'none';
+if(!user){$('bar').innerHTML='';loginView();return;}
+if(tab==='ac'){
+h='<div class="hdr"><b>Account</b></div><div class="sec"><div class="bk"><h3 style="margin:0 0 4px">'+((acc[user]||{}).name||'HomeEase user')+'</h3><div class="meta">+91 '+user+'</div><div class="meta">'+bookings.length+' booking'+(bookings.length===1?'':'s')+' so far</div></div><button class="btn" id="logout" style="background:var(--surf);color:var(--ink)">Log out</button></div>';
+}else if(tab==='bk'){
+h='<div class="hdr"><b>My bookings</b></div><div class="sec">';
+h+=bookings.length?bookings.map(function(b){return '<div class="bk"><span class="pill">Confirmed</span><h3 style="margin:8px 0 4px">'+b.items+'</h3><div class="meta">'+b.when+'</div><div class="meta">'+b.addr+'</div><div class="price">'+inr(b.t)+'</div></div>';}).join(''):'<div class="empty">No bookings yet.<br>Pick a service from Home to book your first one.</div>';
+h+='</div>';
+}else if(view==='cat'){
+var c=CATS.filter(function(x){return x.id===catId;})[0];
+h='<div class="hdr"><button class="back" id="back" aria-label="Back">←</button><b>'+c.n+'</b></div><div class="sec" style="padding-top:4px">'+c.s.map(function(_,i){return svcRow(find(c.id+i));}).join('')+'</div>';
+}else{
+var res=q?ALL.filter(function(s){return s.n.toLowerCase().indexOf(q.toLowerCase())>-1;}):null;
+h='<div class="top"><div class="loc">📍<div>Home<small>Sector 21, Gurugram</small></div></div><h1>'+(((acc[user]||{}).name)?'Hi, '+acc[user].name.split(' ')[0]+'. What needs fixing today?':'Home services at your doorstep')+'</h1><label class="search">🔍<input id="q" placeholder="Search for ‘AC repair’" value="'+q+'"></label></div>';
+if(res){h+='<div class="sec" style="padding-top:8px">'+(res.length?res.map(svcRow).join(''):'<div class="empty">No services match “'+q.replace(/</g,'&lt;')+'”.<br>Try ‘cleaning’ or ‘salon’.</div>')+'</div>';}
+else{
+h+='<div class="sec"><div class="grid">'+CATS.map(function(c){return '<button class="cat" data-cat="'+c.id+'"><span>'+c.e+'</span>'+c.n+'</button>';}).join('')+'</div></div>';
+h+='<div class="sec"><div class="promo"><div><b>Get 20% off your first booking</b><p>Use code FIRST20 at checkout</p></div><span>🎁</span></div></div>';
+h+='<div class="sec"><h2>Most booked services</h2><div class="hs">'+ALL.filter(function(s){return s.r>=4.8;}).map(function(s){return '<button class="card" data-cat="'+s.cat+'"><div class="em">'+s.e+'</div><h3>'+s.n+'</h3><div class="meta"><span class="star">★ '+s.r+'</span></div><div class="price">'+inr(s.p)+'</div></button>';}).join('')+'</div></div>';
+h+='<div class="sec"><h2>Why HomeEase</h2><div class="meta">✔ Verified professionals &nbsp; ✔ Fixed upfront prices &nbsp; ✔ 30-day service warranty</div></div>';
+}}
+m.innerHTML=h;
+var t=total();
+$('bar').innerHTML=(t.c&&tab==='home')?'<button class="cartbar" id="cb"><span>'+t.c+' item'+(t.c>1?'s':'')+' · '+inr(t.t)+'</span><span>View cart</span></button>':'';
+$('n-home').className=tab==='home'?'on':'';$('n-bk').className=tab==='bk'?'on':'';$('n-ac').className=tab==='ac'?'on':'';
+var qi=$('q');if(qi){qi.oninput=function(){q=qi.value;var p=qi.selectionStart;render();var n=$('q');n.focus();n.setSelectionRange(p,p);};}
+}
+function loginView(){
+$('main').innerHTML='<div class="login"><div class="logo">🏠</div><h1>'+(mode==='signup'?'Create your account':'Welcome back')+'</h1><p class="meta">'+(mode==='signup'?'Sign up with your mobile number. We’ll text you a code to verify it.':'Log in with your mobile number. We’ll text you a one-time code.')+'</p>'+(step==='phone'?
+(mode==='signup'?'<label class="meta" for="nm">Full name</label><input class="addr" id="nm" placeholder="Your name" value="'+uname.replace(/"/g,'')+'" style="margin:6px 0 12px"><label class="meta" for="em">Email (optional)</label><input class="addr" id="em" type="email" placeholder="you@example.com" value="'+uemail.replace(/"/g,'')+'" style="margin:6px 0 12px">':'')+'<label class="meta" for="ph">Mobile number</label><div class="phrow"><span>+91</span><input id="ph" inputmode="numeric" maxlength="10" placeholder="10-digit number" value="'+phone+'"></div><div class="err">'+err+'</div><button class="btn" id="sendotp">Send OTP</button><button class="link" id="swmode">'+(mode==='signup'?'Already have an account? Log in':'New here? Create an account')+'</button>'
+:'<label class="meta" for="otp">Enter the 6-digit OTP sent to +91 '+phone+'</label><input class="otp" id="otp" inputmode="numeric" maxlength="6" placeholder="••••••"><div class="err">'+err+'</div><button class="btn" id="verify">Verify and log in</button><button class="link" id="chg">Change number</button><button class="link" id="resend" disabled>Resend OTP</button>')+'<p class="meta tiny">By continuing, you agree to our Terms and Privacy Policy.</p></div>';
+var p=$('ph');if(p){p.oninput=function(){this.value=this.value.replace(/\D/g,'');phone=this.value;};}
+var o=$('otp');if(o){o.oninput=function(){this.value=this.value.replace(/\D/g,'');};o.focus();}
+}
+function api(u,b){return fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(function(r){return r.json();}).catch(function(){return {ok:false,error:'Server not reachable. Start the backend and try again.'};});}
+function saveAcc(){try{localStorage.setItem('he_acc',JSON.stringify(acc));}catch(e){}}
+function clearToast(){var t=$('toast');if(t)t.remove();}
+function notify(c){clearToast();var d=document.createElement('div');d.className='toast';d.id='toast';d.setAttribute('role','status');d.innerHTML='<b>Messages · HomeEase</b><br>'+c+' is your HomeEase verification code. Valid for 2 minutes. Don’t share it.';d.onclick=clearToast;$('app').appendChild(d);setTimeout(clearToast,15000);}
+function sendOtp(){var a=new Uint32Array(1);crypto.getRandomValues(a);otp=String(1000+a[0]%9000);otpExp=Date.now()+120000;resendAt=Date.now()+30000;var c=otp;clearToast();setTimeout(function(){if(otp===c)notify(c);},1800);}
+function tick(){var b=$('resend');if(!b)return;var s=Math.ceil((resendAt-Date.now())/1000);b.disabled=s>0;b.textContent=s>0?'Resend OTP in '+s+'s':'Resend OTP';}
+setInterval(tick,1000);
+document.addEventListener('keydown',function(e){if(e.key!=='Enter')return;var b=$('sendotp')||$('verify');if(b&&(e.target.id==='ph'||e.target.id==='otp'))b.click();});
+var day=0,slot='',addr='';
+function days(){var o=[],d=new Date();for(var i=0;i<4;i++){var x=new Date(d.getTime()+i*864e5);o.push(x.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'}));}return o;}
+var SLOTS=['9:00 AM','11:00 AM','1:00 PM','3:00 PM','5:00 PM','7:00 PM'];
+function checkout(){
+var t=total(),disc=Math.round(t.t*.2),fee=49,ds=days();
+var items=Object.keys(cart).map(function(k){return find(k).n+(cart[k]>1?' ×'+cart[k]:'');});
+$('modal').innerHTML='<div class="sheet" id="sh"><div><h2>Review & book</h2>'+
+items.map(function(i){return '<div class="row"><span>'+i+'</span></div>';}).join('')+
+'<div style="border-top:1px solid var(--line);margin:8px 0"></div><div class="row"><span>Item total</span><span>'+inr(t.t)+'</span></div><div class="row" style="color:var(--ok)"><span>FIRST20 discount</span><span>−'+inr(disc)+'</span></div><div class="row"><span>Visit fee</span><span>'+inr(fee)+'</span></div><div class="row"><b>To pay</b><b>'+inr(t.t-disc+fee)+'</b></div>'+
+'<h2 style="margin-top:16px">Pick a date</h2><div class="chips">'+ds.map(function(d,i){return '<button class="chip'+(i===day?' on':'')+'" data-day="'+i+'">'+d+'</button>';}).join('')+'</div>'+
+'<h2>Pick a time</h2><div class="chips" style="flex-wrap:wrap">'+SLOTS.map(function(s){return '<button class="chip'+(s===slot?' on':'')+'" data-slot="'+s+'">'+s+'</button>';}).join('')+'</div>'+
+'<h2>Address</h2><input class="addr" id="ad" placeholder="House no., street, landmark" value="'+addr.replace(/"/g,'')+'">'+
+'<div class="meta">Pay after the service – cash or UPI.</div><button class="btn" id="book"'+(slot&&addr.trim()?'':' disabled')+'>Confirm booking</button></div></div>';
+$('ad').oninput=function(){addr=this.value;$('book').disabled=!(slot&&addr.trim());};
+}
+function confirmBooking(){
+var t=total(),ds=days(),disc=Math.round(t.t*.2);
+var items=Object.keys(cart).map(function(k){return find(k).n;}).join(', ');
+var b={items:items,when:ds[day]+' at '+slot,addr:addr.trim(),t:t.t-disc+49};
+bookings.unshift(b);try{localStorage.setItem('he_bk',JSON.stringify(bookings));}catch(e){}
+cart={};slot='';addr='';day=0;
+$('modal').innerHTML='<div class="sheet"><div><div class="done"><div class="tick">✓</div><h2>Booking confirmed</h2><p class="meta">A verified professional will arrive on<br><b style="color:var(--ink)">'+b.when+'</b></p></div><button class="btn" id="ok">View my bookings</button></div></div>';
+}
+document.addEventListener('click',function(e){
+var t=e.target.closest('button');if(!t)return;
+if(t.dataset.d){var id=t.dataset.id,n=(cart[id]||0)+parseInt(t.dataset.d,10);if(n<=0)delete cart[id];else cart[id]=n;render();return;}
+if(t.dataset.cat){catId=t.dataset.cat;view='cat';render();$('main').scrollTop=0;return;}
+if(t.id==='back'){view='home';render();return;}
+if(t.id==='cb'){checkout();return;}
+if(t.dataset.day){day=+t.dataset.day;var a=$('ad').value;addr=a;checkout();return;}
+if(t.dataset.slot){slot=t.dataset.slot;addr=$('ad').value;checkout();return;}
+if(t.id==='book'){confirmBooking();return;}
+if(t.id==='ok'){$('modal').innerHTML='';tab='bk';view='home';render();return;}
+if(t.id==='sendotp'){phone=$('ph').value;if($('nm')){uname=$('nm').value.trim();uemail=$('em').value.trim();}
+if(mode==='signup'&&uname.length<2){err='Enter your full name.';}
+else if(!/^[6-9]\d{9}$/.test(phone)){err='Enter a valid 10-digit mobile number.';}
+else if(mode==='login'&&!acc[phone]){err='No account found for this number. Create one below.';}
+else if(mode==='signup'&&acc[phone]){err='This number is already registered. Log in instead.';}
+else{err='';api('/api/send-otp',{phone:phone}).then(function(r){if(r.ok){step='otp';resendAt=Date.now()+30000;err='';}else{err=r.error||'Could not send OTP.';}render();tick();});}
+render();return;}
+if(t.id==='swmode'){if($('nm')){uname=$('nm').value.trim();uemail=$('em').value.trim();}if($('ph'))phone=$('ph').value;mode=mode==='signup'?'login':'signup';err='';render();return;}
+if(t.id==='resend'){resendAt=Date.now()+30000;api('/api/send-otp',{phone:phone}).then(function(r){err=r.ok?'':(r.error||'Could not resend OTP.');render();tick();});tick();return;}
+if(t.id==='verify'){var v=$('otp').value;api('/api/verify-otp',{phone:phone,code:v}).then(function(r){if(r.ok){if(mode==='signup'){acc[phone]={name:uname,email:uemail};saveAcc();}user=phone;try{localStorage.setItem('he_user',user);}catch(x){}err='';tab='home';view='home';}else{err=r.error||'Incorrect code. Try again.';}render();tick();});return;}
+if(t.id==='chg'){step='phone';err='';render();return;}
+if(t.id==='logout'){user='';phone='';step='phone';err='';cart={};tab='home';view='home';try{localStorage.removeItem('he_user');}catch(x){}render();return;}
+if(t.id==='n-ac'){tab='ac';render();return;}
+if(t.id==='n-home'){tab='home';view='home';render();return;}
+if(t.id==='n-bk'){tab='bk';render();return;}
+});
+$('modal').addEventListener('click',function(e){if(e.target.id==='sh'){$('modal').innerHTML='';}});
+render();
+</script>
+</body>
+</html>
